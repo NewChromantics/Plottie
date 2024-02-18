@@ -9,6 +9,7 @@ struct MetaElementView : View, Identifiable
 	var metaString : String? = nil
 	var metaLayers : [LayerMeta]? = nil
 	var metaAssets : [AssetMeta]? = nil
+	var metaMarkers : [MarkerMeta]? = nil
 
 	init(_ xid:String,icon:String,meta:String)
 	{
@@ -30,6 +31,14 @@ struct MetaElementView : View, Identifiable
 		//self.id = UUID()
 		self.icon = icon
 		self.metaAssets = assets
+	}
+
+	init(_ id:String,icon:String,markers:[MarkerMeta])
+	{
+		//self.id = id
+		//self.id = UUID()
+		self.icon = icon
+		self.metaMarkers = markers
 	}
 
 	var body : some View
@@ -75,6 +84,25 @@ struct MetaElementView : View, Identifiable
 			label:
 			{
 				Label("Assets x\(assets.count)", systemImage: icon)
+					.frame(alignment: .leading)
+			}
+			.frame(alignment: .leading)
+		}
+		
+		if let markers = metaMarkers
+		{
+			DisclosureGroup()
+			{
+				ForEach(markers)
+				{
+					marker in
+					Label("Marker \(marker.Name)", systemImage: "square" )
+						.frame(alignment: .leading)
+				}
+			}
+			label:
+			{
+				Label("Markers x\(markers.count)", systemImage: icon)
 					.frame(alignment: .leading)
 			}
 			.frame(alignment: .leading)

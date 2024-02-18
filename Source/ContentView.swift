@@ -9,7 +9,18 @@ import SwiftUI
 import SwiftData
 import Lottie
 
-struct ContentView: View 
+
+
+public extension Color
+{
+	var controlColor : Color
+	{
+		return Color(NSColor.controlColor)
+	}
+}
+
+
+struct ContentView: View
 {
 	@Environment(\.modelContext) private var modelContext
 	@Query private var items: [Item]

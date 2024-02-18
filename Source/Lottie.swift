@@ -8,7 +8,6 @@ struct AssetMeta: Decodable, Identifiable
 	public var p : String
 	public var Folder : String	{	return u	}
 	public var Name : String	{	return p	}
-
 }
 
 struct LayerMeta: Decodable, Identifiable
@@ -30,8 +29,14 @@ struct LayerMeta: Decodable, Identifiable
 	public var StartTime : Double	{	return st	}
 }
 
-struct MarkerMeta: Decodable
+struct MarkerMeta: Decodable, Identifiable
 {
+	public var cm : String
+	public var id : String		{ return Name }
+	public var Name : String	{	return cm	}
+	public var tm : Int
+	public var Frame : Int	{	return tm	}
+	public var dr : Int
 }
 
 //	root json
