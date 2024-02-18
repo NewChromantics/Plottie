@@ -47,6 +47,13 @@ struct LottieDocument: FileDocument
 		lottieFileData = Data()
 	}
 	
+	
+	init(json:String)
+	{
+		lottieFileData = json.data(using: .ascii)!
+		lottie = try! JSONDecoder().decode(LottieMeta.self, from: lottieFileData)
+	}
+	
 	init(configuration: ReadConfiguration) throws
 	{
 		do
