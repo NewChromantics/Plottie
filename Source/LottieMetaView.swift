@@ -97,16 +97,19 @@ struct LottieMetaView: View
 		
 	var body : some View
 	{
-		List(selection: $selection)
+		VStack()
 		{
-			MetaElementView("version",icon:"questionmark.square.fill",meta:"Version \(lottie.v)")
-			MetaElementView("name", icon: "textformat.abc.dottedunderline",meta:"Name \(lottie.Name)")
-			MetaElementView("size", icon: "square.resize",meta:"Size \(lottie.w)x\(lottie.h)")
-			MetaElementView("ddd", icon: "questionmark.square.fill",meta:"ddd \(lottie.ddd)" )
-			MetaElementView("layers",icon:"square.on.square",layers: lottie.Layers)
-			MetaElementView("assets",icon:"square.3.layers.3d.down.left",assets: lottie.Assets)
+			List(selection: $selection)
+			{
+				MetaElementView("version",icon:"questionmark.square.fill",meta:"Version \(lottie.v)")
+				MetaElementView("name", icon: "textformat.abc.dottedunderline",meta:"Name \(lottie.Name)")
+				MetaElementView("size", icon: "square.resize",meta:"Size \(lottie.w)x\(lottie.h)")
+				MetaElementView("ddd", icon: "questionmark.square.fill",meta:"ddd \(lottie.ddd)" )
+				MetaElementView("layers",icon:"square.on.square",layers: lottie.Layers)
+				MetaElementView("assets",icon:"square.3.layers.3d.down.left",assets: lottie.Assets)
+			}
+			Text("Selected: \(selection?.uuidString ?? "none.")")
 		}
-		Text("Selected: \(selection?.uuidString ?? "none.")")
 	}
 
 

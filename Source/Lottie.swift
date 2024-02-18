@@ -45,8 +45,8 @@ struct LottieMeta: Decodable
 	public var LastKeyframe : Double	{	return op;	}
 	public var w:Int = 100
 	public var h:Int = 100
-	public var nm:String = "Lottie File"
-	public var Name : String	{	return nm;	}
+	public var nm:String? = "Lottie File"
+	public var Name : String	{	return nm ?? "Unnamed";	}
 	public var ddd:Int = 0	//	not sure what this is
 		
 	var assets : [AssetMeta]?

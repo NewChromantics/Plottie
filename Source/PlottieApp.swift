@@ -32,6 +32,7 @@ struct PlottieApp: App {
 struct LottieDocument: FileDocument
 {
 	var lottie : LottieMeta
+	var lottieFileData : Data		//	json to render the animation with
 	
 	static var readableContentTypes: [UTType]
 	{
@@ -43,6 +44,7 @@ struct LottieDocument: FileDocument
 	init()
 	{
 		lottie = LottieMeta()
+		lottieFileData = Data()
 	}
 	
 	init(configuration: ReadConfiguration) throws
@@ -55,6 +57,7 @@ struct LottieDocument: FileDocument
 				throw CocoaError(.fileReadUnknown)
 			}
 			let fileContentsData = fileContents!
+			lottieFileData = fileContentsData
 			let fileContentsString = String(data: fileContentsData, encoding: .utf8)
 			lottie = try! JSONDecoder().decode(LottieMeta.self, from: fileContentsData)
 		}

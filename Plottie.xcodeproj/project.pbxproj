@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BF31632B2B828F2200D3B631 /* LottieMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF31632A2B828F2200D3B631 /* LottieMetaView.swift */; };
+		BF31632E2B829F2B00D3B631 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BF31632D2B829F2B00D3B631 /* Lottie */; };
+		BF3163322B82BCC000D3B631 /* ExampleAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3163312B82BCC000D3B631 /* ExampleAnimation.json */; };
 		BF8861942B827F0200063CC0 /* PlottieApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8861932B827F0200063CC0 /* PlottieApp.swift */; };
 		BF8861982B827F0200063CC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8861972B827F0200063CC0 /* Item.swift */; };
 		BF88619A2B827F0300063CC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF8861992B827F0300063CC0 /* Assets.xcassets */; };
@@ -18,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		BF31632A2B828F2200D3B631 /* LottieMetaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LottieMetaView.swift; sourceTree = "<group>"; };
+		BF3163312B82BCC000D3B631 /* ExampleAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ExampleAnimation.json; path = ../../../../Users/graham/.Trash/ExampleAnimation.json; sourceTree = "<group>"; };
 		BF8861902B827F0200063CC0 /* Plottie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plottie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF8861932B827F0200063CC0 /* PlottieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlottieApp.swift; sourceTree = "<group>"; };
 		BF8861972B827F0200063CC0 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -36,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF31632E2B829F2B00D3B631 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +66,7 @@
 		BF8861922B827F0200063CC0 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				BF3163312B82BCC000D3B631 /* ExampleAnimation.json */,
 				BF8861A62B827F3500063CC0 /* App.xcconfig */,
 				BF8861A72B827F3500063CC0 /* Version.xcconfig */,
 				BF8861992B827F0300063CC0 /* Assets.xcassets */,
@@ -108,6 +113,9 @@
 			dependencies = (
 			);
 			name = Plottie;
+			packageProductDependencies = (
+				BF31632D2B829F2B00D3B631 /* Lottie */,
+			);
 			productName = Plottie;
 			productReference = BF8861902B827F0200063CC0 /* Plottie.app */;
 			productType = "com.apple.product-type.application";
@@ -136,6 +144,9 @@
 				Base,
 			);
 			mainGroup = BF8861872B827F0200063CC0;
+			packageReferences = (
+				BF31632C2B829F2B00D3B631 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+			);
 			productRefGroup = BF8861912B827F0200063CC0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -151,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF88619F2B827F0300063CC0 /* Preview Assets.xcassets in Resources */,
+				BF3163322B82BCC000D3B631 /* ExampleAnimation.json in Resources */,
 				BF88619A2B827F0300063CC0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,6 +391,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BF31632C2B829F2B00D3B631 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF31632D2B829F2B00D3B631 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF31632C2B829F2B00D3B631 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF8861882B827F0200063CC0 /* Project object */;
 }
