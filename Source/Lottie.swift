@@ -1,5 +1,5 @@
 
-struct AssetMeta: Decodable
+struct AssetMeta: Decodable, Identifiable
 {
 	public var id : String
 	public var w : Int
@@ -11,15 +11,17 @@ struct AssetMeta: Decodable
 
 }
 
-struct LayerMeta: Decodable
+struct LayerMeta: Decodable, Identifiable
 {
+	var id: Int { return LayerId }
+	
 	public var ip : Double = 0
 	public var FirstKeyframe : Double	{	return ip	}
 	public var op : Double = 10
 	public var LastKeyframe : Double	{	return op	}
 	
 	public var nm : String
-	public var LayerName : String		{	return nm	}
+	public var Name : String		{	return nm	}
 	public var refId : String?
 	public var ResourceId : String	{	return refId ?? ""	}
 	public var ind : Int
@@ -44,6 +46,7 @@ struct LottieMeta: Decodable
 	public var w:Int = 100
 	public var h:Int = 100
 	public var nm:String = "Lottie File"
+	public var Name : String	{	return nm;	}
 	public var ddd:Int = 0	//	not sure what this is
 		
 	var assets : [AssetMeta]?
