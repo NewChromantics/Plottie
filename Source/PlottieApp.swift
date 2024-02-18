@@ -31,6 +31,8 @@ struct PlottieApp: App {
 
 struct LottieDocument: FileDocument
 {
+	var lottie : LottieMeta
+	
 	static var readableContentTypes: [UTType]
 	{
 		[
@@ -40,6 +42,7 @@ struct LottieDocument: FileDocument
 
 	init()
 	{
+		lottie = LottieMeta()
 	}
 	
 	init(configuration: ReadConfiguration) throws
@@ -51,7 +54,9 @@ struct LottieDocument: FileDocument
 			{
 				throw CocoaError(.fileReadUnknown)
 			}
-			let fileContentsString = String(data: fileContents!, encoding: .utf8)
+			let fileContentsData = fileContents!
+			let fileContentsString = String(data: fileContentsData, encoding: .utf8)
+			lottie = try! JSONDecoder().decode(LottieMeta.self, from: fileContentsData)
 		}
 		catch
 		{
