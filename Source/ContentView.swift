@@ -15,7 +15,11 @@ public extension Color
 {
 	var controlColor : Color
 	{
+#if os(macOS)
 		return Color(NSColor.controlColor)
+#else
+		return Color(UIColor.tertiarySystemFill)
+#endif
 	}
 }
 
