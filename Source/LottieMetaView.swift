@@ -1,6 +1,32 @@
 import SwiftUI
 
 
+
+//	to let these be selectable in a list, they need to be identifiable views
+struct LayerMetaView : View, Identifiable
+{
+	var id : UUID = UUID()
+	var layer : LayerMeta
+	
+	var body : some View
+	{
+		DisclosureGroup()
+		{
+			ForEach( layer.Properties )
+			{
+				property in
+				Text("\(property.key) = \(property.value)")
+			}
+		}
+		label:
+		{
+			Label("Layer \(layer.Name)", systemImage: "square" )
+				.frame(maxWidth: .infinity, alignment: .leading)
+		}
+	}
+}
+
+
 //	to let these be selectable in a list, they need to be identifiable views
 struct MetaElementView : View, Identifiable
 {
@@ -52,13 +78,12 @@ struct MetaElementView : View, Identifiable
 		
 		if let layers = metaLayers
 		{
-			DisclosureGroup()
+			DisclosureGroup
 			{
 				ForEach(layers)
 				{
 					layer in
-					Label("Layer \(layer.Name)", systemImage: "square" )
-						.frame(maxWidth: .infinity, alignment: .leading)
+					LayerMetaView(layer:layer)
 				}
 			}
 			label:
@@ -122,6 +147,17 @@ struct LottieMetaView: View
 		self.lottie = lottie
 	}
 	
+	var Properties : [Property]
+	{
+		return
+		[
+			Property("version","Version \(lottie.v)"),
+			Property("name","Name \(lottie.Name)"),
+			Property("size","Size \(lottie.w)x\(lottie.h)"),
+			Property("ddd","ddd \(lottie.ddd)" )
+			
+		]
+	}
 		
 	var body : some View
 	{
@@ -129,10 +165,17 @@ struct LottieMetaView: View
 		{
 			List(selection: $selection)
 			{
-				MetaElementView("version",icon:"questionmark.square.fill",meta:"Version \(lottie.v)")
-				MetaElementView("name", icon: "textformat.abc.dottedunderline",meta:"Name \(lottie.Name)")
-				MetaElementView("size", icon: "square.resize",meta:"Size \(lottie.w)x\(lottie.h)")
-				MetaElementView("ddd", icon: "questionmark.square.fill",meta:"ddd \(lottie.ddd)" )
+				ForEach(Properties)
+				{
+					Property in
+					MetaElementView( Property.key, icon:"questionmark.square.fill",meta:Property.value)
+					/*
+					MetaElementView("version",icon:"questionmark.square.fill",meta:"Version \(lottie.v)")
+					MetaElementView("name", icon: "textformat.abc.dottedunderline",meta:"Name \(lottie.Name)")
+					MetaElementView("size", icon: "square.resize",meta:"Size \(lottie.w)x\(lottie.h)")
+					MetaElementView("ddd", icon: "questionmark.square.fill",meta:"ddd \(lottie.ddd)" )
+					 */
+				}
 				MetaElementView("layers",icon:"square.on.square",layers: lottie.Layers)
 				MetaElementView("assets",icon:"square.3.layers.3d.down.left",assets: lottie.Assets)
 			}

@@ -1,3 +1,18 @@
+//	spec is readable here
+//	https://lottiefiles.github.io/lottie-docs/breakdown/bouncy_ball/
+
+struct Property : Identifiable
+{
+	var id: String { return key }
+	var key : String
+	var value : String
+	
+	init(_ key: String,_ value: String)
+	{
+		self.key = key
+		self.value = value
+	}
+}
 
 struct AssetMeta: Decodable, Identifiable
 {
@@ -10,10 +25,43 @@ struct AssetMeta: Decodable, Identifiable
 	public var Name : String	{	return p	}
 }
 
+struct TransformMeta: Decodable
+{
+	public var id : String
+	public var w : Int
+	public var h : Int
+	public var u : String
+	public var p : String
+	public var Folder : String	{	return u	}
+	public var Name : String	{	return p	}
+}
+
+
+
 struct LayerMeta: Decodable, Identifiable
 {
+	//	identifiable
 	var id: Int { return LayerId }
 	
+	var Properties : [Property]
+	{
+		return [
+			Property("FirstKeyframe",String(FirstKeyframe)),
+			Property("LastKeyframe",String(LastKeyframe)),
+			Property("Name",Name),
+			Property("ResourceId",ResourceId),
+			Property("Name",Name),
+			Property("LayerId",String(LayerId)),
+			Property("StartTime",String(StartTime))
+		]
+	}
+/*
+	enum CodingKeys : String, CodingKey
+	{
+		case ip
+		//case FirstKeyframe = "ip"
+	}
+	*/
 	public var ip : Double = 0
 	public var FirstKeyframe : Double	{	return ip	}
 	public var op : Double = 10
