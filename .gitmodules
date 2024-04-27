@@ -1,0 +1,3 @@
+[submodule "PopLottie.SwiftPackage"]
+	path = PopLottie.SwiftPackage
+	url = https://github.com/NewChromantics/PopLottie.SwiftPackage.git
