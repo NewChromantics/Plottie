@@ -68,7 +68,7 @@ struct LottieDocument: FileDocument
 			lottieFileData = fileContentsData
 			let fileContentsString = String(data: fileContentsData, encoding: .utf8)
 			print(fileContentsString)
-			lottie = try! JSONDecoder().decode(PopLottie.Root.self, from: fileContentsData)
+			lottie = try JSONDecoder().decode(PopLottie.Root.self, from: fileContentsData)
 		}
 		catch
 		{

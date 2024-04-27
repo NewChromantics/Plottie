@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 import Lottie
-
+import PopLottie
 
 
 public extension Color
@@ -52,7 +52,7 @@ struct ContentView: View
 						//Lottie.LottieAnimation.named("ExampleAnimation")
 						try! Lottie.LottieAnimation.from(data: self.document.lottieFileData)
 					}
-					placeholder:
+				placeholder:
 					{
 						Text("Loading...")
 					}
@@ -61,10 +61,14 @@ struct ContentView: View
 					.frame(maxWidth:.infinity,maxHeight: .infinity)
 				}
 				
+				PopLottie.LottieView(lottie:document.lottie)
+					.frame(maxWidth:.infinity,maxHeight: .infinity)
+			
+				
 				Label("Time \(playbackFrameTime)", systemImage: "clock.fill")
 					.padding(5)
 					.frame(maxWidth:.infinity,alignment: .leading)
-
+								
 				if loadingError != nil
 				{
 					Label("Failed to load animation \(loadingError!)", systemImage:"exclamationmark.triangle.fill")
