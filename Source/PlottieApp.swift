@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import UniformTypeIdentifiers
+import PopLottie
 
 @main
 struct PlottieApp: App {
@@ -31,7 +32,7 @@ struct PlottieApp: App {
 
 struct LottieDocument: FileDocument
 {
-	var lottie : LottieMeta
+	var lottie : PopLottie.Root
 	var lottieFileData : Data		//	json to render the animation with
 	
 	static var readableContentTypes: [UTType]
@@ -43,7 +44,7 @@ struct LottieDocument: FileDocument
 
 	init()
 	{
-		lottie = LottieMeta()
+		lottie = PopLottie.Root(Width: 100, Height: 100, Name:"New",DurationSeconds: 10)
 		lottieFileData = Data()
 	}
 	
@@ -51,7 +52,7 @@ struct LottieDocument: FileDocument
 	init(json:String)
 	{
 		lottieFileData = json.data(using: .ascii)!
-		lottie = try! JSONDecoder().decode(LottieMeta.self, from: lottieFileData)
+		lottie = try! JSONDecoder().decode(PopLottie.Root.self, from: lottieFileData)
 	}
 	
 	init(configuration: ReadConfiguration) throws
@@ -66,7 +67,8 @@ struct LottieDocument: FileDocument
 			let fileContentsData = fileContents!
 			lottieFileData = fileContentsData
 			let fileContentsString = String(data: fileContentsData, encoding: .utf8)
-			lottie = try! JSONDecoder().decode(LottieMeta.self, from: fileContentsData)
+			print(fileContentsString)
+			lottie = try! JSONDecoder().decode(PopLottie.Root.self, from: fileContentsData)
 		}
 		catch
 		{

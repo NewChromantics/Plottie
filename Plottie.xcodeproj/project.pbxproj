@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF1E05212BDD7445007D29B3 /* PopLottie in Frameworks */ = {isa = PBXBuildFile; productRef = BF1E05202BDD7445007D29B3 /* PopLottie */; };
 		BF31632B2B828F2200D3B631 /* LottieMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF31632A2B828F2200D3B631 /* LottieMetaView.swift */; };
 		BF31632E2B829F2B00D3B631 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BF31632D2B829F2B00D3B631 /* Lottie */; };
 		BF4F409A2B9C951900DB6B1D /* ExampleAssets in Resources */ = {isa = PBXBuildFile; fileRef = BF4F40992B9C951900DB6B1D /* ExampleAssets */; };
@@ -15,7 +16,6 @@
 		BF88619A2B827F0300063CC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF8861992B827F0300063CC0 /* Assets.xcassets */; };
 		BF88619F2B827F0300063CC0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF88619E2B827F0300063CC0 /* Preview Assets.xcassets */; };
 		BF8861A92B82899800063CC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8861A82B82899800063CC0 /* ContentView.swift */; };
-		BF8861AB2B828AAD00063CC0 /* Lottie.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8861AA2B828AAD00063CC0 /* Lottie.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +31,6 @@
 		BF8861A62B827F3500063CC0 /* App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
 		BF8861A72B827F3500063CC0 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		BF8861A82B82899800063CC0 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		BF8861AA2B828AAD00063CC0 /* Lottie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lottie.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +39,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF31632E2B829F2B00D3B631 /* Lottie in Frameworks */,
+				BF1E05212BDD7445007D29B3 /* PopLottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,7 +90,6 @@
 			children = (
 				BF31632A2B828F2200D3B631 /* LottieMetaView.swift */,
 				BF8861A82B82899800063CC0 /* ContentView.swift */,
-				BF8861AA2B828AAD00063CC0 /* Lottie.swift */,
 				BF8861972B827F0200063CC0 /* Item.swift */,
 				BF8861932B827F0200063CC0 /* PlottieApp.swift */,
 			);
@@ -115,6 +114,7 @@
 			name = Plottie;
 			packageProductDependencies = (
 				BF31632D2B829F2B00D3B631 /* Lottie */,
+				BF1E05202BDD7445007D29B3 /* PopLottie */,
 			);
 			productName = Plottie;
 			productReference = BF8861902B827F0200063CC0 /* Plottie.app */;
@@ -146,6 +146,7 @@
 			mainGroup = BF8861872B827F0200063CC0;
 			packageReferences = (
 				BF31632C2B829F2B00D3B631 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				BF1E051F2BDD7445007D29B3 /* XCLocalSwiftPackageReference "PopLottie.SwiftPackage" */,
 			);
 			productRefGroup = BF8861912B827F0200063CC0 /* Products */;
 			projectDirPath = "";
@@ -174,7 +175,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF8861AB2B828AAD00063CC0 /* Lottie.swift in Sources */,
 				BF8861982B827F0200063CC0 /* Item.swift in Sources */,
 				BF8861A92B82899800063CC0 /* ContentView.swift in Sources */,
 				BF31632B2B828F2200D3B631 /* LottieMetaView.swift in Sources */,
@@ -392,6 +392,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		BF1E051F2BDD7445007D29B3 /* XCLocalSwiftPackageReference "PopLottie.SwiftPackage" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = PopLottie.SwiftPackage;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		BF31632C2B829F2B00D3B631 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -404,6 +411,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BF1E05202BDD7445007D29B3 /* PopLottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PopLottie;
+		};
 		BF31632D2B829F2B00D3B631 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BF31632C2B829F2B00D3B631 /* XCRemoteSwiftPackageReference "lottie-spm" */;

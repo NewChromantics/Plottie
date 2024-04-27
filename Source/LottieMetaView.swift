@@ -1,5 +1,5 @@
 import SwiftUI
-
+import PopLottie
 
 
 //	to let these be selectable in a list, they need to be identifiable views
@@ -12,10 +12,15 @@ struct LayerMetaView : View, Identifiable
 	{
 		DisclosureGroup()
 		{
-			ForEach( layer.Properties )
+			//	reflect everything
+			let mirror = Mirror(reflecting: layer)
+			let Properties = Array(mirror.children)
+			ForEach( Properties, id: \.label)
 			{
-				property in
-				Text("\(property.key) = \(property.value)")
+				child in
+				let Key = child.label ?? "<NoKey>"
+				let Value = String(describing: child.value)
+				Text("Found child '\(Key)' with value '\(Value)'")
 			}
 		}
 		label:
@@ -34,8 +39,8 @@ struct MetaElementView : View, Identifiable
 	var icon : String	//	can we use Image?
 	var metaString : String? = nil
 	var metaLayers : [LayerMeta]? = nil
-	var metaAssets : [AssetMeta]? = nil
-	var metaMarkers : [MarkerMeta]? = nil
+	//var metaAssets : [AssetMeta]? = nil
+	//var metaMarkers : [MarkerMeta]? = nil
 
 	init(_ xid:String,icon:String,meta:String)
 	{
@@ -50,7 +55,7 @@ struct MetaElementView : View, Identifiable
 		self.icon = icon
 		self.metaLayers = layers
 	}
-	
+	/*
 	init(_ id:String,icon:String,assets:[AssetMeta])
 	{
 		//self.id = id
@@ -66,7 +71,7 @@ struct MetaElementView : View, Identifiable
 		self.icon = icon
 		self.metaMarkers = markers
 	}
-
+*/
 	var body : some View
 	{
 		if let meta = metaString
@@ -86,6 +91,7 @@ struct MetaElementView : View, Identifiable
 					LayerMetaView(layer:layer)
 				}
 			}
+			
 			label:
 			{
 				Label("Layers x\(layers.count)", systemImage: icon)
@@ -94,7 +100,7 @@ struct MetaElementView : View, Identifiable
 			}
 			.frame(maxWidth: .infinity, alignment: .leading)
 		}
-		
+		/*
 		if let assets = metaAssets
 		{
 			DisclosureGroup()
@@ -132,54 +138,33 @@ struct MetaElementView : View, Identifiable
 			}
 			.frame(alignment: .leading)
 		}
+		 */
 	}
 }
 
 struct LottieMetaView: View
 {
-	var lottie : LottieMeta
+	var lottie : PopLottie.Root
 	@State var selection : UUID?
 	@State var LayersExpanded : Bool = false
 	@State var AssetsExpanded : Bool = false
 
-	init(_ lottie:LottieMeta)
+	init(_ lottie:PopLottie.Root)
 	{
 		self.lottie = lottie
 	}
-	
-	var Properties : [Property]
-	{
-		return
-		[
-			Property("version","Version \(lottie.v)"),
-			Property("name","Name \(lottie.Name)"),
-			Property("size","Size \(lottie.w)x\(lottie.h)"),
-			Property("ddd","ddd \(lottie.ddd)" )
-			
-		]
-	}
+
 		
 	var body : some View
 	{
-		VStack()
+		List
 		{
-			List(selection: $selection)
-			{
-				ForEach(Properties)
-				{
-					Property in
-					MetaElementView( Property.key, icon:"questionmark.square.fill",meta:Property.value)
-					/*
-					MetaElementView("version",icon:"questionmark.square.fill",meta:"Version \(lottie.v)")
-					MetaElementView("name", icon: "textformat.abc.dottedunderline",meta:"Name \(lottie.Name)")
-					MetaElementView("size", icon: "square.resize",meta:"Size \(lottie.w)x\(lottie.h)")
-					MetaElementView("ddd", icon: "questionmark.square.fill",meta:"ddd \(lottie.ddd)" )
-					 */
-				}
-				MetaElementView("layers",icon:"square.on.square",layers: lottie.Layers)
-				MetaElementView("assets",icon:"square.3.layers.3d.down.left",assets: lottie.Assets)
-			}
-			Text("Selected: \(selection?.uuidString ?? "none.")")
+			MetaElementView("version",icon:"questionmark.square.fill",meta:"Version \(lottie.v)")
+			MetaElementView("name", icon: "textformat.abc.dottedunderline",meta:"Name \(lottie.Name)")
+			MetaElementView("size", icon: "square.resize",meta:"Size \(lottie.w)x\(lottie.h)")
+			MetaElementView("ddd", icon: "questionmark.square.fill",meta:"ddd \(lottie.ddd)" )
+			MetaElementView("layers",icon:"square.on.square",layers: lottie.layers)
+			//MetaElementView("assets",icon:"square.3.layers.3d.down.left",assets: lottie.Assets)
 		}
 	}
 
@@ -188,9 +173,9 @@ struct LottieMetaView: View
 
 #Preview {
 	
-	var meta = LottieMeta()
+	var meta = PopLottie.Root(Width: 100, Height: 100, Name: "Preview", DurationSeconds: 10)
 	meta.layers = []
-	meta.layers?.append( LayerMeta(nm: "test", ind: 0, st: 0 ) )
-	meta.layers?.append( LayerMeta(nm: "test2", ind: 1, st: 2 ) )
+	//meta.layers?.append( LayerMeta(nm: "test", ind: 0, st: 0 ) )
+	//meta.layers?.append( LayerMeta(nm: "test2", ind: 1, st: 2 ) )
 	return LottieMetaView( meta )
 }
