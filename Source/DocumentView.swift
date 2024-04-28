@@ -34,16 +34,21 @@ struct DocumentView: View
 	//@State var loadedAnimation : Lottie.LottieAnimation? = nil
 	@State var loadingError : String?
 	@State var playbackFrameTime : Lottie.AnimationFrameTime = 0
-
-	var body: some View
+	
+	@State private var showSpecLottieView = false
+	@State var SelectedLayer : UUID = UUID()
+	
+	func AnimationRenderView() -> some View
 	{
-		//HStack()
-		HSplitView()
+		VStack()
 		{
-			LottieMetaView(document.lottie)
-				.frame(minWidth:100,maxHeight: .infinity)
+			Toggle(isOn: $showSpecLottieView)
+			{
+				Text("Show spec lottie view")
+			}
+			.toggleStyle(.checkbox)
 			
-			VStack()
+			if ( showSpecLottieView )
 			{
 				if self.document.lottieFileData.count > 0
 				{
@@ -58,27 +63,68 @@ struct DocumentView: View
 					}
 					.playing(loopMode: .loop)
 					.getRealtimeAnimationFrame($playbackFrameTime)
-					.frame(maxWidth:.infinity,maxHeight: .infinity)
-				}
-				
-				PopLottie.LottieView(lottie:document.lottie)
-					.frame(maxWidth:.infinity,maxHeight: .infinity)
-			
-				
-				Label("Time \(playbackFrameTime)", systemImage: "clock.fill")
-					.padding(5)
-					.frame(maxWidth:.infinity,alignment: .leading)
-								
-				if loadingError != nil
-				{
-					Label("Failed to load animation \(loadingError!)", systemImage:"exclamationmark.triangle.fill")
-						.padding(5)
-						.frame(maxWidth:.infinity,alignment: .leading)
+					
 				}
 			}
+			if ( true )
+			{
+				PopLottie.LottieView(lottie:document.lottie)
+					.frame(maxWidth:.infinity,maxHeight: .infinity)
+			}
 			
+			Label("Time \(playbackFrameTime)", systemImage: "clock.fill")
+				.padding(5)
+				.frame(maxWidth:.infinity,alignment: .leading)
+			
+			if loadingError != nil
+			{
+				Label("Failed to load animation \(loadingError!)", systemImage:"exclamationmark.triangle.fill")
+					.padding(5)
+					.frame(maxWidth:.infinity,alignment: .leading)
+			}
 		}
-		.frame(maxWidth:.infinity,maxHeight: .infinity)
+	}
+	
+	func LayerTimelineView() -> some View
+	{
+		List(selection: $SelectedLayer)
+		{
+			ForEach(document.lottie.layers)
+			{
+				Layer in
+				DisclosureGroup()
+				{
+					Text("Layer")
+				}
+				label:
+				{
+					Label("Layer \(Layer.Name)", systemImage: "square" )
+						.frame(maxWidth: .infinity, alignment: .leading)
+				}
+			}
+		}
+		
+	}
+	
+	var body: some View
+	{
+		VSplitView()
+		{
+			//HSplitView()
+			HStack()
+			{
+				LottieMetaView(document.lottie)
+					.frame(minWidth:100,maxHeight: .infinity)
+				
+				AnimationRenderView()
+					.frame(maxWidth:.infinity,maxHeight: .infinity)
+				
+			}
+			.frame(maxWidth:.infinity,maxHeight: .infinity)
+			
+			LayerTimelineView()
+				.frame(maxWidth:.infinity,maxHeight: .infinity)
+		}
 	}
 	
 	
@@ -106,8 +152,11 @@ let ExampleJson = """
 """
 let ExampleDocument = LottieDocument(json:ExampleJson)
 
-#Preview 
+
+#Preview
 {
-	DocumentView(document:ExampleDocument)
+	//DocumentView(document:ExampleDocument)
+	//DocumentView(document:LottieDocument(BundleFilename: "ExampleAssets/Text.lottie"))
+	DocumentView(document:LottieDocument(Url:"https://raw.githubusercontent.com/NewChromantics/Plottie/main/ExampleAssets/Text.lottie.json"))
 		.modelContainer(for: Item.self, inMemory: true)
 }

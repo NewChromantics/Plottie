@@ -15,20 +15,21 @@ struct PlottieApp: App
 {
 	var body: some Scene
 	{
+		
 		WindowGroup
 		{
 			//	gr: want a better way of doing this...
 			//LottieView(filename: URL(filePath: "/Volumes/Code/Plottie/ExampleAssets/Text.lottie.json") )
-			LottieView(resourceFilename: "ExampleAssets/Text.lottie")
+			LottieView(resourceFilename: "ExampleAssets/TextX.lottie")
 		}
 		
-		/*
+		
 		DocumentGroup(newDocument: LottieDocument())
 		{
 			file in
 				DocumentView(document: file.document)
 		}
-		 */
+		 
 		/*
 		//	gr: can't get this right yet
 		DocumentGroup(editing: .lottiejsDocument, migrationPlan: PlottieMigrationPlan.self)
@@ -58,6 +59,17 @@ struct LottieDocument: FileDocument
 		lottieFileData = Data()
 	}
 	
+	init(Url:String)
+	{
+		let lottieFileContents = try! String.init(contentsOf: URL(string: Url)! )
+		self.init(json: lottieFileContents)
+	}
+
+	init(BundleFilename:String)
+	{
+		let lottieFileContents = try! String.init(contentsOfFile: BundleFilename)
+		self.init(json: lottieFileContents)
+	}
 	
 	init(json:String)
 	{
