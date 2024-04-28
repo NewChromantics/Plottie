@@ -11,22 +11,32 @@ import UniformTypeIdentifiers
 import PopLottie
 
 @main
-struct PlottieApp: App {
-    var body: some Scene {
+struct PlottieApp: App 
+{
+	var body: some Scene
+	{
+		WindowGroup
+		{
+			//	gr: want a better way of doing this...
+			//LottieView(filename: URL(filePath: "/Volumes/Code/Plottie/ExampleAssets/Text.lottie.json") )
+			LottieView(resourceFilename: "ExampleAssets/Text.lottie")
+		}
 		
-		DocumentGroup(newDocument: LottieDocument()) 
+		/*
+		DocumentGroup(newDocument: LottieDocument())
 		{
 			file in
-				ContentView(document: file.document)
+				DocumentView(document: file.document)
 		}
+		 */
 		/*
 		//	gr: can't get this right yet
-        DocumentGroup(editing: .lottiejsDocument, migrationPlan: PlottieMigrationPlan.self)
+		DocumentGroup(editing: .lottiejsDocument, migrationPlan: PlottieMigrationPlan.self)
 		{
 			ContentView(document:LottieDocument())
-        }
-		 */
-    }
+		}
+		*/
+	}
 }
 
 
@@ -67,7 +77,7 @@ struct LottieDocument: FileDocument
 			let fileContentsData = fileContents!
 			lottieFileData = fileContentsData
 			let fileContentsString = String(data: fileContentsData, encoding: .utf8)
-			print(fileContentsString)
+			//print(fileContentsString)
 			lottie = try JSONDecoder().decode(PopLottie.Root.self, from: fileContentsData)
 		}
 		catch

@@ -15,7 +15,7 @@
 		BF8861982B827F0200063CC0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8861972B827F0200063CC0 /* Item.swift */; };
 		BF88619A2B827F0300063CC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF8861992B827F0300063CC0 /* Assets.xcassets */; };
 		BF88619F2B827F0300063CC0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BF88619E2B827F0300063CC0 /* Preview Assets.xcassets */; };
-		BF8861A92B82899800063CC0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8861A82B82899800063CC0 /* ContentView.swift */; };
+		BF8861A92B82899800063CC0 /* DocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8861A82B82899800063CC0 /* DocumentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +30,7 @@
 		BF88619E2B827F0300063CC0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BF8861A62B827F3500063CC0 /* App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
 		BF8861A72B827F3500063CC0 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
-		BF8861A82B82899800063CC0 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BF8861A82B82899800063CC0 /* DocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				BF31632A2B828F2200D3B631 /* LottieMetaView.swift */,
-				BF8861A82B82899800063CC0 /* ContentView.swift */,
+				BF8861A82B82899800063CC0 /* DocumentView.swift */,
 				BF8861972B827F0200063CC0 /* Item.swift */,
 				BF8861932B827F0200063CC0 /* PlottieApp.swift */,
 			);
@@ -176,7 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF8861982B827F0200063CC0 /* Item.swift in Sources */,
-				BF8861A92B82899800063CC0 /* ContentView.swift in Sources */,
+				BF8861A92B82899800063CC0 /* DocumentView.swift in Sources */,
 				BF31632B2B828F2200D3B631 /* LottieMetaView.swift in Sources */,
 				BF8861942B827F0200063CC0 /* PlottieApp.swift in Sources */,
 			);

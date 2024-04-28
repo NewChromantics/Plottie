@@ -24,7 +24,7 @@ public extension Color
 }
 
 
-struct ContentView: View
+struct DocumentView: View
 {
 	@Environment(\.modelContext) private var modelContext
 	@Query private var items: [Item]
@@ -37,8 +37,8 @@ struct ContentView: View
 
 	var body: some View
 	{
-		//HSplitView()
-		HStack()
+		//HStack()
+		HSplitView()
 		{
 			LottieMetaView(document.lottie)
 				.frame(minWidth:100,maxHeight: .infinity)
@@ -108,6 +108,6 @@ let ExampleDocument = LottieDocument(json:ExampleJson)
 
 #Preview 
 {
-	ContentView(document:ExampleDocument)
+	DocumentView(document:ExampleDocument)
 		.modelContainer(for: Item.self, inMemory: true)
 }
