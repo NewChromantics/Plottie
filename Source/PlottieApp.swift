@@ -20,7 +20,7 @@ struct PlottieApp: App
 		{
 			//	gr: want a better way of doing this...
 			//LottieView(filename: URL(filePath: "/Volumes/Code/Plottie/ExampleAssets/Text.lottie.json") )
-			LottieView(resourceFilename: "ExampleAssets/TextX.lottie")
+			LottieView(resourceFilename: "ExampleAssets/Text.lottie")
 		}
 		
 		

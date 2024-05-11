@@ -1,6 +1,131 @@
 import SwiftUI
 import PopLottie
 
+func substring(_ str: String, _ start: Int, length : Int) -> String
+{
+	let startIndex = str.index(str.startIndex, offsetBy: start)
+	let end = min( str.count, start+length-1 )
+	let endIndex = str.index(str.startIndex, offsetBy: end)
+	return String(str[startIndex..<endIndex])
+}
+
+//	to let these be selectable in a list, they need to be identifiable views
+struct AnyMetaTreeView : View, Identifiable, Hashable
+{
+	static func == (lhs: AnyMetaTreeView, rhs: AnyMetaTreeView) -> Bool {
+		return lhs.TreePath == rhs.TreePath
+	}
+	func hash(into hasher: inout Hasher) 
+	{
+		hasher.combine(TreePath)
+	}
+	
+	//var id : UUID = UUID()
+	var id : String	{	TreePath	}
+	var TreePath : String
+	{
+		return "\(ParentKey) / \(ThisKey)"
+	}
+
+	var ParentKey : String
+	var ThisKey : String
+	var ThisValue : Any
+	
+	func LabelView(Meta:Mirror) -> some View
+	{
+		let TypeString = "\(type(of: ThisValue))"
+		let LabelString = TreePath
+		//let LabelString = "\(ThisKey)"
+		return Label("\(LabelString) (\(TypeString))", systemImage: "square" )
+			.frame(maxWidth: .infinity, alignment: .leading)
+	}
+	
+	var body : some View
+	{
+		let ThisMeta = Mirror(reflecting: ThisValue)
+		
+		
+		if let ValueIsArray = ThisValue as? Array<Any>
+		{
+			DisclosureGroup()
+			{
+				//Text("I am array x\(ValueIsArray.count)")
+				let Children = ValueIsArray
+				//let colors: [Int] = [1,2,3]
+				let ChildIndexes : [Int] = Array(ValueIsArray.indices)
+				ForEach(ChildIndexes, id: \.hashValue)
+				{
+					ChildIndex in
+					let ChildValue = ValueIsArray[ChildIndex]
+					var ValueString = substring("\(ChildValue)", 0, length: 20 )
+					//let ValueString = "Value"
+					let TypeString = "\(type(of: ChildValue))"
+					//Text("Hello \(Index) \(TypeString) \(ValueString)")
+
+					let ChildMeta = Mirror(reflecting: ChildValue)
+					//let ChildLabel = child.label ?? "no label"
+					let ChildLabel = "\(TypeString) #\(ChildIndex)"
+					
+					AnyMetaTreeView( ParentKey: TreePath, ThisKey: ChildLabel, ThisValue: ChildValue)
+					
+					//Text("\(ChildLabel) children x\(ChildMeta.children.count)")
+				}
+			}
+			label:
+			{
+				LabelView(Meta:ThisMeta)
+					.frame(maxWidth: .infinity, alignment: .leading)
+			}
+		}
+		else if ( !ThisMeta.children.isEmpty )
+		{
+			DisclosureGroup()
+			{
+				//Text("Has children")
+				let Children = Array(ThisMeta.children)
+				ForEach(Children, id: \.label)
+				{
+					child in
+				
+						let ChildMeta = Mirror(reflecting: child.value)
+						let ChildLabel = child.label ?? "no label"
+						
+						AnyMetaTreeView( ParentKey: TreePath, ThisKey: child.label ?? "no label", ThisValue: child.value)
+							.frame(maxWidth: .infinity, alignment: .leading)
+						/*
+						Text("\(ChildLabel) children x\(ChildMeta.children.count)")
+							.frame(maxWidth: .infinity, alignment: .leading)
+						*/
+					
+				}
+				
+			}
+			label:
+			{
+				LabelView(Meta:ThisMeta)
+					.frame(maxWidth: .infinity, alignment: .leading)
+			}
+		}
+		else
+		{
+			LabelView(Meta:ThisMeta)
+				.frame(maxWidth: .infinity, alignment: .leading)
+		}
+		
+	
+		/*
+		let Properties = Array(mirror.children)
+		ForEach( Properties, id: \.label)
+		{
+			child in
+			let Key = child.label ?? "<NoKey>"
+			let Value = String(describing: child.value)
+			Text("Found child '\(Key)' with value '\(Value)'")
+		}
+		*/
+	}
+}
+
 
 //	to let these be selectable in a list, they need to be identifiable views
 struct LayerMetaView : View, Identifiable
@@ -157,25 +282,39 @@ struct LottieMetaView: View
 		
 	var body : some View
 	{
-		List
-		{
-			MetaElementView("version",icon:"questionmark.square.fill",meta:"Version \(lottie.v)")
-			MetaElementView("name", icon: "textformat.abc.dottedunderline",meta:"Name \(lottie.Name)")
-			MetaElementView("size", icon: "square.resize",meta:"Size \(lottie.w)x\(lottie.h)")
-			MetaElementView("ddd", icon: "questionmark.square.fill",meta:"ddd \(lottie.ddd)" )
-			MetaElementView("layers",icon:"square.on.square",layers: lottie.layers)
-			//MetaElementView("assets",icon:"square.3.layers.3d.down.left",assets: lottie.Assets)
-		}
+		MetaTreeView(RootValue: lottie, RootLabel: "Animation")
 	}
-
-
 }
 
+
+
+struct MetaTreeView: View
+{
+	var RootValue : Any
+	var RootLabel : String
+	@State var SelectedTreePath : Set<String> = ["ROOT"]
+	
+	var body : some View
+	{
+		List(selection: $SelectedTreePath)
+		{
+			AnyMetaTreeView(ParentKey: "ROOT", ThisKey: RootLabel, ThisValue: RootValue)
+		}
+		
+		Text("Selected: \(SelectedTreePath.joined())")
+	}
+}
+
+	
 #Preview {
 	
-	var meta = PopLottie.Root(Width: 100, Height: 100, Name: "Preview", DurationSeconds: 10)
-	meta.layers = []
+	var Lottie = PopLottie.Root(Width: 100, Height: 100, Name: "Preview", DurationSeconds: 10)
+	Lottie.layers = []
+	Lottie.layers.append( LayerMeta(name:"test") )
 	//meta.layers?.append( LayerMeta(nm: "test", ind: 0, st: 0 ) )
 	//meta.layers?.append( LayerMeta(nm: "test2", ind: 1, st: 2 ) )
-	return LottieMetaView( meta )
+	//return LottieMetaView( meta )
+	
+	return MetaTreeView(RootValue: Lottie, RootLabel: "Animation")
+	.frame(minWidth: 100,minHeight: 200)
 }
