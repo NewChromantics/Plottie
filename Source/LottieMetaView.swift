@@ -286,8 +286,7 @@ struct LottieMetaView: View
 }
 
 
-
-struct MetaTreeView: View
+struct MetaTreeView : View
 {
 	var RootValue : Any
 	var RootLabel : String
@@ -309,50 +308,149 @@ struct MetaTreeView: View
 }
 
 
-//	from https://developer.apple.com/documentation/swiftui/list#Refreshing-the-list-content
-struct FileTreeView : View {
-	
-	struct FileItem: Hashable, Identifiable, CustomStringConvertible
+struct FileItem: Hashable, Identifiable
+{
+	static func == (lhs: FileItem, rhs: FileItem) -> Bool
 	{
-		//var id: Self { self }
-		//var id : UUID = UUID()
-		var id : String { name}
-		var name: String
-		var children: [FileItem]? = nil
-		var description: String {
-			switch children {
-			case nil:
-				return "📄 \(name)"
-			case .some(let children):
-				return children.isEmpty ? "📂 \(name)" : "📁 \(name)"
+		lhs.id == rhs.id
+	}
+	
+	func hash(into hasher: inout Hasher)
+	{
+		hasher.combine(Path)
+	}
+	
+	var id : String { Path }
+	//var name: String
+	var PredefinedChildren: [FileItem]? = nil
+	var children: [FileItem]?
+	{
+		if ( PredefinedChildren != nil )
+		{
+			return PredefinedChildren
+		}
+		
+		//	value is array, so elements are our children
+		if let ValueAsArray = Value as? Array<Any>
+		{
+			let Children = ValueAsArray.indices.map
+			{
+				Index in
+				let Key = "[\(Index)]"
+				let Value = ValueAsArray[Index]
+				return FileItem(Key:Key,Value:Value,ParentPath: self.Path)
 			}
+			return Children
+		}
+		
+		//	value is struct or something, show the children (properties)
+		let ValueMeta = Mirror(reflecting: Value)
+		
+		//	no members, probably a primitive type
+		if ( ValueMeta.children.isEmpty )
+		{
+			return nil
+		}
+			
+		let Properties = Array(ValueMeta.children)
+		//let Children = Properties.map{ p in FileItem(Key:p.label??"??",Value:"Hello") }
+		let Children = Properties.map
+		{
+			Property in
+			let Label = Property.label ?? "PropertyWithNoLabel"
+			return FileItem(Key:Label,Value:Property.value,ParentPath: self.Path)
+		}
+		return Children
+	}
+
+	var ParentPath : String? = nil//	if none, we are root
+	var ParentPathNonNull : String	{	return ParentPath ?? "^"	}
+	var Path : String { return "\(ParentPathNonNull)/\(Key)" }
+	var Key : String
+	var Value : Any
+	
+	init(Key:String,children:[FileItem]?=nil)
+	{
+		self.Key = Key
+		self.Value = 123
+		self.PredefinedChildren = children
+	}
+	
+	init(RootValue:Any)
+	{
+		self.Key = "Root"
+		self.Value = RootValue
+		self.PredefinedChildren = nil
+	}
+	init(Key:String,Value:Any,ParentPath:String)
+	{
+		self.ParentPath = ParentPath
+		self.Key = Key
+		self.Value = Value
+		self.PredefinedChildren = nil
+	}
+
+
+	var label: String
+	{
+		switch children 
+		{
+			case nil:
+				return "📄 \(Path)"
+			case .some(let children):
+				return children.isEmpty ? "📂 \(Path)" : "📁 \(Path)"
 		}
 	}
-	let fileHierarchyData: [FileItem] = [
-	  FileItem(name: "users", children:
-		[FileItem(name: "user1234", children:
-		  [FileItem(name: "Photos", children:
-			[FileItem(name: "photo001.jpg"),
-			 FileItem(name: "photo002.jpg")]),
-		   FileItem(name: "Movies", children:
-			 [FileItem(name: "movie001.mp4")]),
-			  FileItem(name: "Documents", children: [])
-		  ]),
-		 FileItem(name: "newuser", children:
-		   [FileItem(name: "Documents", children: [])
-		   ])
-		]),
-		FileItem(name: "private", children: nil)
-	]
+}
+
+
+func InitPreviewLottie() -> PopLottie.Root
+{
+	var Lottie = PopLottie.Root(Width: 100, Height: 100, Name: "Preview", DurationSeconds: 10)
+	Lottie.layers = []
+	Lottie.layers.append( LayerMeta(name:"test") )
+	return Lottie
+}
+var PreviewLottie = InitPreviewLottie()
+
+let PreviewLottieData = FileItem(RootValue: PreviewLottie)
+
+let fileHierarchyData: [FileItem] = [
+  FileItem(Key: "users", children:
+	[FileItem(Key: "user1234", children:
+	  [FileItem(Key: "Photos", children:
+		[FileItem(Key: "photo001.jpg"),
+		 FileItem(Key: "photo002.jpg")]),
+	   FileItem(Key: "Movies", children:
+		 [FileItem(Key: "movie001.mp4")]),
+		  FileItem(Key: "Documents", children: [])
+	  ]),
+	 FileItem(Key: "newuser", children:
+	   [FileItem(Key: "Documents", children: [])
+	   ])
+	]),
+	FileItem(Key: "private", children: nil)
+]
+
+
+//	from https://developer.apple.com/documentation/swiftui/list#Refreshing-the-list-content
+struct FileTreeView : View
+{
 
 	@State var Selection = ""
 	
 	var body: some View
 	{
+		List([PreviewLottieData], children: \.children, selection: $Selection)
+		{
+			item in
+			Text(item.label)
+		}
+		
 		List(fileHierarchyData, children: \.children, selection: $Selection)
 		{
 			item in
-			Text(item.description)
+			Text(item.label)
 		}
 	}
 }
@@ -367,7 +465,7 @@ struct FileTreeView : View {
 	//meta.layers?.append( LayerMeta(nm: "test2", ind: 1, st: 2 ) )
 	//return LottieMetaView( meta )
 	
-	//return FileTreeView()
+	return FileTreeView()
 	
 	
 	return MetaTreeView(RootValue: Lottie, RootLabel: "Animation")
