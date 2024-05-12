@@ -20,11 +20,10 @@ struct AnyMetaTreeView : View, Identifiable, Hashable
 		hasher.combine(TreePath)
 	}
 	
-	//var id : UUID = UUID()
 	var id : String	{	TreePath	}
 	var TreePath : String
 	{
-		return "\(ParentKey) / \(ThisKey)"
+		return "\(ParentKey)/\(ThisKey)"
 	}
 
 	var ParentKey : String
@@ -292,16 +291,69 @@ struct MetaTreeView: View
 {
 	var RootValue : Any
 	var RootLabel : String
-	@State var SelectedTreePath : Set<String> = ["ROOT"]
+	@State var SelectedTreePath : Set<String> = ["/ROOT"]
 	
 	var body : some View
 	{
 		List(selection: $SelectedTreePath)
 		{
-			AnyMetaTreeView(ParentKey: "ROOT", ThisKey: RootLabel, ThisValue: RootValue)
+			AnyMetaTreeView(ParentKey: "", ThisKey: "ROOT", ThisValue: RootValue)
+				.frame(maxWidth: .infinity)
 		}
+		.frame(maxHeight: .infinity)
+		//.toolbar { EditButton() }
 		
 		Text("Selected: \(SelectedTreePath.joined())")
+		//Text("Selected: \(SelectedTreePath.count)")
+	}
+}
+
+
+//	from https://developer.apple.com/documentation/swiftui/list#Refreshing-the-list-content
+struct FileTreeView : View {
+	
+	struct FileItem: Hashable, Identifiable, CustomStringConvertible
+	{
+		//var id: Self { self }
+		//var id : UUID = UUID()
+		var id : String { name}
+		var name: String
+		var children: [FileItem]? = nil
+		var description: String {
+			switch children {
+			case nil:
+				return "📄 \(name)"
+			case .some(let children):
+				return children.isEmpty ? "📂 \(name)" : "📁 \(name)"
+			}
+		}
+	}
+	let fileHierarchyData: [FileItem] = [
+	  FileItem(name: "users", children:
+		[FileItem(name: "user1234", children:
+		  [FileItem(name: "Photos", children:
+			[FileItem(name: "photo001.jpg"),
+			 FileItem(name: "photo002.jpg")]),
+		   FileItem(name: "Movies", children:
+			 [FileItem(name: "movie001.mp4")]),
+			  FileItem(name: "Documents", children: [])
+		  ]),
+		 FileItem(name: "newuser", children:
+		   [FileItem(name: "Documents", children: [])
+		   ])
+		]),
+		FileItem(name: "private", children: nil)
+	]
+
+	@State var Selection = ""
+	
+	var body: some View
+	{
+		List(fileHierarchyData, children: \.children, selection: $Selection)
+		{
+			item in
+			Text(item.description)
+		}
 	}
 }
 
@@ -314,6 +366,9 @@ struct MetaTreeView: View
 	//meta.layers?.append( LayerMeta(nm: "test", ind: 0, st: 0 ) )
 	//meta.layers?.append( LayerMeta(nm: "test2", ind: 1, st: 2 ) )
 	//return LottieMetaView( meta )
+	
+	//return FileTreeView()
+	
 	
 	return MetaTreeView(RootValue: Lottie, RootLabel: "Animation")
 	.frame(minWidth: 100,minHeight: 200)
